@@ -14,9 +14,13 @@ Ships a recipe that pulls in and enables everything it needs.
 Register this repo as a Composer VCS source, then require it:
 
 ```bash
-composer config repositories.jarvis vcs https://github.com/imrodmartin/jarvis
+composer config repositories.jarvis '{"type":"vcs","url":"https://github.com/imrodmartin/jarvis","no-api":true}'
 composer require imrodmartin/jarvis
 ```
+
+`no-api` makes Composer clone over git instead of the GitHub API — it avoids the
+unauthenticated 60-calls/hour API rate limit (and the occasional `502`) that
+otherwise blocks the install.
 
 Composer installs the theme to `web/themes/custom/jarvis` and downloads the
 contrib modules to `web/modules/contrib`. Then run, **in this order**:
@@ -34,6 +38,14 @@ drush cache:rebuild
 drush recipe web/themes/custom/jarvis/recipe
 drush cache:rebuild
 ```
+
+> **DDEV (or any containerised Drush):** pass the recipe as an **absolute
+> container path**, since `ddev drush` resolves relative paths from the
+> container working dir:
+>
+> ```bash
+> ddev drush recipe /var/www/html/web/themes/custom/jarvis/recipe
+> ```
 
 > **Order matters.** If you apply the recipe *before* enabling Canvas + the
 > theme and rebuilding, the import fails with
