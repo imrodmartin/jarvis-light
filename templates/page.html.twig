@@ -1,0 +1,137 @@
+{#
+/**
+ * @file
+ * Jarvis page layout.
+ *
+ * Full-width regions: header, primary_menu, footer (span the viewport).
+ * Boxed regions (.container = centred max-width w/ left+right margins):
+ *   breadcrumb, highlighted, content_top, content, content_bottom.
+ * Sidebars collapse when empty. Left sidebar renders left of content,
+ * right sidebar right of content.
+ *
+ * Canvas full-width columns: when no sidebar is present the content region is
+ * rendered edge-to-edge, so a 1/2/3-column layout set to "full" (.container-fluid)
+ * spans the viewport while "boxed" (.container) stays centred — the same toggle
+ * Bootstrap Layout Builder exposes. With a sidebar present the page is boxed and
+ * the toggle has no breakout room (a sidebar page is a boxed page).
+ */
+#}
+<div class="layout-container">
+
+  {# Full-width #}
+  {% if page.header %}
+    <header role="banner" class="jarvis-region jarvis-region--full jarvis-header">
+      {{ page.header }}
+    </header>
+  {% endif %}
+
+  {# Boxed nav row: branding left, menu right. On <lg the menu is a Bootstrap
+     responsive offcanvas (offcanvas-lg) that slides in from the right when the
+     hamburger is tapped and slides back on close/backdrop tap — no custom JS,
+     the loaded bootstrap bundle drives it.
+     ponytail: block ids (jarvis_site_branding / jarvis_main_menu) are hardcoded
+     to split branding out of the offcanvas drawer; rename the blocks -> update
+     these keys. #}
+  {% if page.primary_menu %}
+    <div class="container jarvis-region jarvis-primary-menu d-flex align-items-center">
+      <div class="jarvis-branding-wrap">
+        {{ page.primary_menu.jarvis_site_branding }}
+      </div>
+      <button class="jarvis-menu-toggle d-lg-none ms-auto" type="button"
+              data-bs-toggle="offcanvas" data-bs-target="#jarvis-primary-nav"
+              aria-controls="jarvis-primary-nav" aria-label="{{ 'Toggle main menu'|t }}">
+        <span class="jarvis-menu-toggle__bar"></span>
+      </button>
+      <div class="offcanvas-lg offcanvas-end jarvis-primary-nav" tabindex="-1"
+           id="jarvis-primary-nav" aria-label="{{ 'Main menu'|t }}">
+        <div class="offcanvas-header d-lg-none">
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                  data-bs-target="#jarvis-primary-nav" aria-label="{{ 'Close'|t }}"></button>
+        </div>
+        <div class="offcanvas-body">
+          {{ page.primary_menu.jarvis_main_menu }}
+          {# Any other block placed here (and the block-demo placeholder) — the
+             two blocks above are split out by id; this renders the rest so
+             nothing silently vanishes. #}
+          {{ page.primary_menu|without('jarvis_site_branding', 'jarvis_main_menu') }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {{ page.secondary_menu }}
+
+  {# Boxed #}
+  {% if page.breadcrumb %}
+    <div class="container jarvis-region jarvis-breadcrumb">{{ page.breadcrumb }}</div>
+  {% endif %}
+
+  {# Full-width #}
+  {# Front page hides its title regardless of which node/Canvas page it is. #}
+  {% if page.page_title and not is_front %}
+    <div class="jarvis-region jarvis-region--full jarvis-page-title">{{ page.page_title }}</div>
+  {% endif %}
+
+  {% if page.hero %}
+    <div class="jarvis-region jarvis-region--full jarvis-hero">{{ page.hero }}</div>
+  {% endif %}
+
+  {% if page.highlighted %}
+    <div class="container jarvis-region jarvis-highlighted">{{ page.highlighted }}</div>
+  {% endif %}
+
+  {{ page.help }}
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+
+    {% if page.content_top %}
+      <div class="container jarvis-region jarvis-content-top">{{ page.content_top }}</div>
+    {% endif %}
+
+    {# Render regions to strings: a Drupal region array is truthy even when it
+       holds no blocks (carries #cache/metadata), so test the trimmed output. #}
+    {% set sidebar_left = page.sidebar_left|render|trim %}
+    {% set sidebar_right = page.sidebar_right|render|trim %}
+    {% set has_sidebar = sidebar_left or sidebar_right %}
+    {% if has_sidebar %}
+      {# Boxed layout with sidebars. `col` lets content flex to fill whatever
+         the present sidebars leave — handles 1 or 2 sidebars automatically. #}
+      <div class="container jarvis-region jarvis-main">
+        <div class="row g-4">
+          {% if sidebar_left %}
+            <aside class="col-12 col-lg-3 jarvis-sidebar jarvis-sidebar--left" role="complementary">
+              {{ sidebar_left|raw }}
+            </aside>
+          {% endif %}
+          <div class="col jarvis-content">
+            {{ page.content }}
+          </div>
+          {% if sidebar_right %}
+            <aside class="col-12 col-lg-3 jarvis-sidebar jarvis-sidebar--right" role="complementary">
+              {{ sidebar_right|raw }}
+            </aside>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      {# No sidebars: edge-to-edge so Canvas columns can go full width.
+         Non-Canvas content self-boxes via the column layout's own container. #}
+      <div class="jarvis-content jarvis-content--full">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+    {% if page.content_bottom %}
+      <div class="container jarvis-region jarvis-content-bottom">{{ page.content_bottom }}</div>
+    {% endif %}
+
+  </main>
+
+  {# Full-width #}
+  {% if page.footer %}
+    <footer role="contentinfo" class="jarvis-region jarvis-region--full jarvis-footer">
+      {{ page.footer }}
+    </footer>
+  {% endif %}
+
+</div>{# /.layout-container #}

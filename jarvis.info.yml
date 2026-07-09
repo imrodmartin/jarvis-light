@@ -1,0 +1,21 @@
+name: Jarvis
+type: theme
+base theme: stable9
+core_version_requirement: ^11 || ^12
+description: 'DXPR-style SDC theme with Bootstrap 5, built for Drupal Canvas and Layout Builder.'
+package: Custom
+libraries:
+  - jarvis/global
+regions:
+  header: Header
+  primary_menu: 'Primary menu'
+  breadcrumb: Breadcrumb
+  page_title: 'Page title'
+  hero: Hero
+  highlighted: Highlighted
+  content_top: 'Content top'
+  sidebar_left: 'Left sidebar'
+  content: Content
+  sidebar_right: 'Right sidebar'
+  content_bottom: 'Content bottom'
+  footer: Footer

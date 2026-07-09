@@ -1,0 +1,241 @@
+/**
+ * Jarvis theme overrides — DXPR-style look via Bootstrap 5 CSS custom properties.
+ * ponytail: theme at the variable level; add a SCSS pipeline only if this can't reach it.
+ */
+:root {
+  --bs-primary: #2d6cdf;
+  --bs-primary-rgb: 45, 108, 223;
+  --bs-secondary: #1b2a4a;
+  --bs-body-font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --bs-body-color: #1b2130;
+  --bs-border-radius: 0.65rem;
+  --bs-border-radius-lg: 1rem;
+  --jarvis-section-gap: 4rem;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #245ac0;
+  --bs-btn-hover-border-color: #245ac0;
+  --bs-btn-padding-x: 1.6rem;
+  --bs-btn-padding-y: 0.7rem;
+  font-weight: 600;
+}
+
+/* Jarvis spacing utilities — exact px, driven by the padding/margin SDC props.
+   Bootstrap's rem scale can't hit 10/20/30px, so these are bespoke.
+   small=10px, medium=20px, large=30px. */
+.jp-p-all-small { padding: 10px; }
+.jp-p-all-medium { padding: 20px; }
+.jp-p-all-large { padding: 30px; }
+.jp-p-top-small { padding-top: 10px; }
+.jp-p-top-medium { padding-top: 20px; }
+.jp-p-top-large { padding-top: 30px; }
+.jp-p-bottom-small { padding-bottom: 10px; }
+.jp-p-bottom-medium { padding-bottom: 20px; }
+.jp-p-bottom-large { padding-bottom: 30px; }
+.jp-p-left-small { padding-left: 10px; }
+.jp-p-left-medium { padding-left: 20px; }
+.jp-p-left-large { padding-left: 30px; }
+.jp-p-right-small { padding-right: 10px; }
+.jp-p-right-medium { padding-right: 20px; }
+.jp-p-right-large { padding-right: 30px; }
+
+.jp-m-all-small { margin: 10px; }
+.jp-m-all-medium { margin: 20px; }
+.jp-m-all-large { margin: 30px; }
+.jp-m-top-small { margin-top: 10px; }
+.jp-m-top-medium { margin-top: 20px; }
+.jp-m-top-large { margin-top: 30px; }
+.jp-m-bottom-small { margin-bottom: 10px; }
+.jp-m-bottom-medium { margin-bottom: 20px; }
+.jp-m-bottom-large { margin-bottom: 30px; }
+.jp-m-left-small { margin-left: 10px; }
+.jp-m-left-medium { margin-left: 20px; }
+.jp-m-left-large { margin-left: 30px; }
+.jp-m-right-small { margin-right: 10px; }
+.jp-m-right-medium { margin-right: 20px; }
+.jp-m-right-large { margin-right: 30px; }
+
+/* Vertical padding button: 30px top + bottom. */
+.jp-vpad { padding-top: 30px; padding-bottom: 30px; }
+
+/* No-padding toggle: overrides jp-vpad's top/bottom so rows can touch
+   vertically. !important because it must beat jp-vpad above. */
+.jp-nopad { padding-top: 0 !important; padding-bottom: 0 !important; }
+
+/* Site logo: cap at 400px, pin left. Branding block img has no class,
+   so scope to the branding block in the header region. */
+/* Site logo: cap at 400px, pin left. Same rule whether branding sits in the
+   header region or the primary-menu (nav) region. */
+.jarvis-header [id*="branding"],
+.jarvis-primary-menu [id*="branding"] { text-align: left; }
+.jarvis-header [id*="branding"] img,
+.jarvis-primary-menu [id*="branding"] img { width: 400px; max-width: 100%; height: auto; }
+
+/* Canvas renders the primary-menu blocks with random UUID ids inside
+   .offcanvas-body (menu first, logo second in the DOM), so target by structure,
+   not id. One row: logo left (capped 400px), menu 50px to its right. */
+/* Break the nav row out of the centered .container so it spans the viewport;
+   100px left pad pins the logo near the browser's left edge. */
+.jarvis-primary-menu { max-width: none; padding-left: 100px; }
+.jarvis-primary-menu .offcanvas-body > div { display: flex; align-items: center; }
+.jarvis-primary-menu .offcanvas-body > div > *:has(img) { order: -1; }
+.jarvis-primary-menu .offcanvas-body a[rel="home"] img { width: 400px; max-width: 100%; height: auto; }
+.jarvis-primary-menu .offcanvas-body nav[role="navigation"] { margin-left: 50px; }
+
+/* Full-width columns: kill container-fluid gutter, row negative margins, AND
+   the Bootstrap col padding so the section reaches the screen edge. Without the
+   last rule the col's --bs-gutter-x padding leaves a white strip on each side
+   (shows as left padding on the hero). Trade-off: full-width multi-column
+   sections lose their inter-column gutter — use the gap/padding props for that.
+   ponytail: single-column full-bleed is the common case; revisit if multi-col
+   full-width needs a between-columns gap. */
+.jarvis-columns .container-fluid { padding-left: 0; padding-right: 0; }
+.jarvis-columns .container-fluid > .row { margin-left: 0; margin-right: 0; }
+.jarvis-columns .container-fluid > .row > [class*="col"] { padding-left: 0; padding-right: 0; }
+
+/* Primary menu: superfish-style dropdowns. Pure CSS hover + :focus-within
+   multi-level fly-outs — no jQuery/superfish plugin (native covers it).
+   Menu block renders a bare <nav><ul><li> (no .menu / menu-item classes), so
+   selectors target that structure; :has(> ul) marks parents for the caret.
+   ponytail: skips hover-intent delay + touch tap-handling (JS); a dedicated
+   mobile menu is separate scope — add if touch UX needs it. */
+.jarvis-primary-menu nav ul { list-style: none; margin: 0; padding: 0; }
+
+/* Top level = horizontal bar. */
+.jarvis-primary-menu nav > ul { display: flex; flex-wrap: wrap; }
+
+.jarvis-primary-menu li { position: relative; }
+.jarvis-primary-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.jarvis-primary-menu a:hover,
+.jarvis-primary-menu a:focus { color: var(--bs-primary); }
+
+/* Caret on parents (items that contain a submenu). */
+.jarvis-primary-menu li:has(> ul) > a::after { content: " \25be"; opacity: 0.6; }
+
+/* Submenus (nested ul): hidden, revealed on hover/focus. */
+.jarvis-primary-menu li > ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  padding: 0.25rem 0;
+  background: #fff;
+  border-radius: var(--bs-border-radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 1000;
+}
+.jarvis-primary-menu li:hover > ul,
+.jarvis-primary-menu li:focus-within > ul {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Second level and deeper fly to the right. */
+.jarvis-primary-menu li li > ul { top: 0; left: 100%; transform: translateX(4px); }
+.jarvis-primary-menu li li:hover > ul,
+.jarvis-primary-menu li li:focus-within > ul { transform: translateX(0); }
+
+/* Hamburger: 44px touch target. Visibility handled by .d-lg-none in markup. */
+.jarvis-menu-toggle {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--bs-border-color, #ccc);
+  border-radius: var(--bs-border-radius);
+  background: transparent;
+  cursor: pointer;
+}
+.jarvis-menu-toggle__bar,
+.jarvis-menu-toggle__bar::before,
+.jarvis-menu-toggle__bar::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--bs-body-color);
+}
+.jarvis-menu-toggle__bar { position: relative; }
+.jarvis-menu-toggle__bar::before { position: absolute; top: -7px; left: 0; }
+.jarvis-menu-toggle__bar::after { position: absolute; top: 7px; left: 0; }
+
+/* Desktop (>=992px): menu sits left, 100px after the logo; the responsive
+   offcanvas renders inline (bootstrap resets its panel styles). */
+@media (min-width: 992px) {
+  /* Logo now lives inside .jarvis-primary-nav, so no extra left offset here —
+     the region's 100px pad positions the logo; the 50px logo→menu gap is on nav. */
+  .jarvis-primary-nav { margin-left: 0; }
+  .jarvis-primary-menu .offcanvas-body { padding: 0; }
+}
+
+/* Mobile (<992px): menu lives in the slide-out offcanvas drawer; stack it and
+   keep submenus static + always open so every item is tappable. */
+@media (max-width: 991.98px) {
+  .jarvis-primary-menu nav > ul { flex-direction: column; }
+  .jarvis-primary-menu li > ul {
+    position: static;
+    min-width: 0;
+    padding: 0 0 0 1rem;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .jarvis-primary-menu li li > ul { left: auto; }
+}
+
+/* Theme-settings colors: regions consume the vars set by hook_preprocess_html.
+   An unset var makes the property invalid -> ignored, so the default look holds.
+   Text rules also cover headings inside the region (specificity 0,0,1,1) so a
+   region's own text color wins over the global heading color. */
+/* Title bg/text also target the page-title block by id, since the block can be
+   placed in any region (here it lives in `highlighted`, not `page_title`).
+   ponytail: id couples to the jarvis_page_title block machine name; rename the
+   block -> update this selector. */
+.jarvis-page-title { padding: 20px 20px 20px 100px; }
+.jarvis-page-title,
+#block-jarvis-page-title { background: var(--jarvis-title-bg); }
+.jarvis-page-title,
+.jarvis-page-title :is(h1, h2, h3, h4, h5, h6),
+#block-jarvis-page-title,
+#block-jarvis-page-title :is(h1, h2, h3, h4, h5, h6) { color: var(--jarvis-title-color); }
+
+.jarvis-footer { background: var(--jarvis-footer-bg); margin-top: 50px; }
+.jarvis-footer,
+.jarvis-footer :is(h1, h2, h3, h4, h5, h6) { color: var(--jarvis-footer-color); }
+/* Links follow the footer text color (not Bootstrap's link blue) so they stay
+   legible on a dark footer bg. Falls back to the inherited region color when the
+   footer text color isn't set. ADA contrast still depends on picking a light
+   text color for a dark background. */
+.jarvis-footer a,
+.jarvis-footer a:hover,
+.jarvis-footer a:focus { color: var(--jarvis-footer-color, inherit); }
+
+.jarvis-header { background: var(--jarvis-header-bg); }
+.jarvis-header,
+.jarvis-header :is(h1, h2, h3, h4, h5, h6) { color: var(--jarvis-header-color); }
+.jarvis-header a { color: var(--jarvis-header-link-color); }
+
+h1, h2, h3, h4, h5, h6 { color: var(--jarvis-heading-color); }

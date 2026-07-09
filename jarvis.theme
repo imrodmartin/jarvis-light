@@ -1,0 +1,114 @@
+<?php
+
+/**
+ * @file
+ * Jarvis theme hooks.
+ */
+
+/**
+ * Color settings: setting key => [label, CSS custom property, needs -rgb, default].
+ *
+ * Shared by theme-settings.php (the form) and hook_preprocess_html (the output)
+ * so both stay in sync. overrides.css consumes these vars, so a region is
+ * themed just by setting its variable.
+ */
+function _jarvis_colors() {
+  return [
+    'jarvis_color_primary'     => ['Primary', '--bs-primary', TRUE, '#2d6cdf'],
+    'jarvis_color_secondary'   => ['Secondary', '--bs-secondary', FALSE, '#1b2a4a'],
+    'jarvis_color_title_bg'    => ['Title background', '--jarvis-title-bg', FALSE, ''],
+    'jarvis_color_title_text'  => ['Title text', '--jarvis-title-color', FALSE, ''],
+    'jarvis_color_footer_bg'   => ['Footer background', '--jarvis-footer-bg', FALSE, ''],
+    'jarvis_color_footer_text' => ['Footer text', '--jarvis-footer-color', FALSE, ''],
+    'jarvis_color_heading'     => ['Heading color', '--jarvis-heading-color', FALSE, ''],
+    'jarvis_color_header_bg'   => ['Header block region background', '--jarvis-header-bg', FALSE, ''],
+    'jarvis_color_header_text' => ['Header block region text', '--jarvis-header-color', FALSE, ''],
+    'jarvis_color_header_link' => ['Header block region link color', '--jarvis-header-link-color', FALSE, ''],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_html().
+ *
+ * Emits the chosen colors as CSS variables in an inline <style>. Uses html:root
+ * (specificity 0,0,1,1) so it beats overrides.css's :root defaults regardless of
+ * head order. Only valid #rrggbb values are emitted — this closes CSS injection
+ * via the setting value.
+ */
+function jarvis_preprocess_html(array &$variables) {
+  $lines = [];
+  foreach (_jarvis_colors() as $key => $info) {
+    [$label, $var, $rgb] = $info;
+    $val = theme_get_setting($key);
+    if (!is_string($val) || !preg_match('/^#[0-9a-fA-F]{6}$/', $val)) {
+      continue;
+    }
+    $lines[] = "$var:$val;";
+    if ($rgb) {
+      $r = hexdec(substr($val, 1, 2));
+      $g = hexdec(substr($val, 3, 2));
+      $b = hexdec(substr($val, 5, 2));
+      $lines[] = "{$var}-rgb:$r,$g,$b;";
+    }
+  }
+  if ($lines) {
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => 'html:root{' . implode('', $lines) . '}',
+      ],
+      'jarvis-colors',
+    ];
+  }
+
+  // Attach the self-hosted fonts stylesheet generated on settings save.
+  $css = 'public://jarvis-fonts/jarvis-fonts.css';
+  $real = \Drupal::service('file_system')->realpath($css);
+  if ($real && file_exists($real)) {
+    $url = \Drupal::service('file_url_generator')->generateString($css);
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'link',
+        '#attributes' => ['rel' => 'stylesheet', 'href' => $url . '?' . filemtime($real)],
+      ],
+      'jarvis-fonts',
+    ];
+  }
+}
+
+/**
+ * Font slots: setting-key stem => [label, default CSS selector].
+ *
+ * Shared by theme-settings.php (form) and the submit handler (which downloads
+ * the chosen Google fonts and writes the generated stylesheet). Each slot
+ * stores three settings: _family, _weight, _selector.
+ */
+function _jarvis_fonts() {
+  return [
+    'base'       => ['Base font', 'body'],
+    'headings'   => ['Headings', 'h1, h2, h3, h4, h5, h6, .field--label, label, .page-title'],
+    'navigation' => ['Navigation', 'nav, nav ul li, nav a'],
+    'site_name'  => ['Site name', '.site-name, .navbar-brand'],
+    'blockquote' => ['Blockquote', 'blockquote, blockquote p'],
+  ];
+}
+
+/**
+ * Parse a Google Fonts variant ("400", "700i", "italic") into weight + style.
+ */
+function _jarvis_font_variant($variant) {
+  $variant = (string) $variant;
+  $italic = str_ends_with($variant, 'i') || $variant === 'italic';
+  $weight = preg_replace('/\D/', '', $variant);
+  return ['weight' => $weight !== '' ? $weight : '400', 'italic' => $italic];
+}
+
+/**
+ * Build the Google Fonts css2 URL for a single family + variant.
+ */
+function _jarvis_font_css_url($family, $variant) {
+  $v = _jarvis_font_variant($variant);
+  $fam = str_replace(' ', '+', trim($family));
+  $axis = $v['italic'] ? "ital,wght@1,{$v['weight']}" : "wght@{$v['weight']}";
+  return "https://fonts.googleapis.com/css2?family={$fam}:{$axis}&display=swap";
+}

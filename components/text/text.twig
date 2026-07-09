@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Jarvis rich-text SDC.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set width = width|default('normal') %}
+{% set align = align|default('start') %}
+{% set col = { narrow: 'col-lg-6', normal: 'col-lg-8', wide: 'col-12' }[width] %}
+{% set align_class = { start: 'text-start', center: 'text-center', end: 'text-end' }[align] %}
+<div class="jarvis-text container {{ space }}">
+  <div class="row justify-content-center">
+    <div class="{{ col }} {{ align_class }}">
+      {{ body|raw }}
+    </div>
+  </div>
+</div>

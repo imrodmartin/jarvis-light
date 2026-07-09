@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Jarvis 3-column layout. col-12 mobile -> stack; col-sm-6 tablet -> 2-up;
+ * col-lg-4 desktop -> 3-up. Everything placed inside wraps at each breakpoint.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set gap_class = { none: 'g-0', small: 'g-2', normal: 'g-4', large: 'g-5' }[gap|default('normal')] %}
+{% set container = (width|default('boxed')) == 'full' ? 'container-fluid' : 'container' %}
+<div class="jarvis-columns jarvis-columns--3 {{ space }}">
+  <div class="{{ container }}">
+    <div class="row {{ gap_class }}">
+      <div class="col-12 col-sm-6 col-lg-4">
+        {{ first }}
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        {{ second }}
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        {{ third }}
+      </div>
+    </div>
+  </div>
+</div>

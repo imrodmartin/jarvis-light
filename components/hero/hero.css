@@ -1,0 +1,40 @@
+.jarvis-hero {
+  /* Fixed min-height, NOT vh: Canvas renders in an auto-height preview iframe
+     where viewport units feed back into the iframe height and break scrolling. */
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+.jarvis-hero:not([style*="background-image"]) {
+  background: linear-gradient(135deg, var(--bs-primary), var(--bs-secondary, #1b2a4a));
+}
+.jarvis-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 0;
+}
+.jarvis-hero__inner {
+  z-index: 1;
+}
+/* Text color: light (#fff) or dark (#2d6cdf), from the text_color prop. */
+.jarvis-hero--text-light,
+.jarvis-hero--text-light .jarvis-hero__heading,
+.jarvis-hero--text-light .jarvis-hero__subheading {
+  color: #fff;
+}
+.jarvis-hero--text-dark,
+.jarvis-hero--text-dark .jarvis-hero__heading,
+.jarvis-hero--text-dark .jarvis-hero__subheading {
+  color: var(--bs-primary);
+}
+/* Light text -> whole region black for guaranteed contrast. Comes after the
+   gradient rule above so it wins the specificity tie. A background image, when
+   present, still paints over this and is handled by the overlay in hero.js. */
+.jarvis-hero--text-light {
+  background-color: #000;
+}
+.jarvis-hero--text-light:not([style*="background-image"]) {
+  background: #000;
+}

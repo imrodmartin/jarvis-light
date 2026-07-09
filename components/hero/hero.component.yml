@@ -1,0 +1,108 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Hero
+status: stable
+description: 'Full-width hero banner with heading, subtext, CTA and background image.'
+category: Jarvis
+props:
+  type: object
+  required:
+    - heading
+  properties:
+    heading:
+      title: Heading
+      type: string
+      examples:
+        - 'Build faster with Jarvis'
+    subheading:
+      title: Subheading
+      type: string
+      examples:
+        - 'A component-driven Drupal theme for Canvas and Layout Builder.'
+    cta_text:
+      title: 'CTA text'
+      type: string
+      examples:
+        - 'Get started'
+    cta_href:
+      title: 'CTA link'
+      type: string
+      format: uri-reference
+      examples:
+        - '/node/1'
+        - 'https://example.com'
+    image:
+      title: 'Background image'
+      $ref: json-schema-definitions://canvas.module/image
+    overlay:
+      title: 'Overlay opacity (%)'
+      type: integer
+      default: 40
+      examples:
+        - 40
+    align:
+      title: 'Text alignment'
+      type: string
+      enum: [start, center, end]
+      'meta:enum':
+        start: Left
+        center: Center
+        end: Right
+      default: center
+      examples:
+        - center
+    text_color:
+      title: 'Text color'
+      type: string
+      enum: [light, dark]
+      'meta:enum':
+        light: 'Light (#ffffff)'
+        dark: 'Dark (#2d6cdf)'
+      default: light
+      examples:
+        - light
+    padding:
+      title: Padding
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    padding_size:
+      title: 'Padding size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    margin:
+      title: Margin
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    margin_size:
+      title: 'Margin size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    vertical_padding:
+      title: 'Vertical padding (30px)'
+      type: boolean
+      default: false

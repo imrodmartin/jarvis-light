@@ -1,0 +1,85 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Image
+status: stable
+description: 'Responsive image with optional caption, full-width option.'
+category: Jarvis
+props:
+  type: object
+  properties:
+    image:
+      title: Image
+      $ref: json-schema-definitions://canvas.module/image
+    image_style:
+      title: 'Image style'
+      # ponytail: hardcoded enum of site image styles; regenerate if styles change.
+      type: string
+      enum: [original, thumbnail, medium, large, wide, hero_banner]
+      'meta:enum':
+        original: 'Original (responsive)'
+        thumbnail: Thumbnail
+        medium: Medium
+        large: Large
+        wide: Wide
+        hero_banner: 'Hero banner'
+      default: original
+    image_uri:
+      title: 'Image source URI (internal)'
+      # Original stream-wrapper URI; required for image_style to build a derivative.
+      type: string
+    caption:
+      title: Caption
+      type: string
+      examples:
+        - 'Photo caption goes here.'
+    full_width:
+      title: 'Full width'
+      type: boolean
+      default: false
+      examples:
+        - false
+    padding:
+      title: Padding
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    padding_size:
+      title: 'Padding size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    margin:
+      title: Margin
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    margin_size:
+      title: 'Margin size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    vertical_padding:
+      title: 'Vertical padding (30px)'
+      type: boolean
+      default: false

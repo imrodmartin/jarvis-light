@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Jarvis 2-column layout. col-12 on mobile -> stacks; col-md-* -> side by side.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set gap_class = { none: 'g-0', small: 'g-2', normal: 'g-4', large: 'g-5' }[gap|default('normal')] %}
+{% set cols = {
+  even: ['col-12 col-md-6', 'col-12 col-md-6'],
+  'wide-left': ['col-12 col-md-8', 'col-12 col-md-4'],
+  'wide-right': ['col-12 col-md-4', 'col-12 col-md-8'],
+}[ratio|default('even')] %}
+{% set container = (width|default('boxed')) == 'full' ? 'container-fluid' : 'container' %}
+<div class="jarvis-columns jarvis-columns--2 {{ space }}">
+  <div class="{{ container }}">
+    <div class="row {{ gap_class }}">
+      <div class="{{ cols[0] }}">
+        {{ first }}
+      </div>
+      <div class="{{ cols[1] }}">
+        {{ second }}
+      </div>
+    </div>
+  </div>
+</div>

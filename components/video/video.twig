@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Jarvis video SDC — iframe embed or native <video> for file URLs.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set aspect = aspect|default('16x9') %}
+{% set ratio_class = { '16x9': 'ratio-16x9', '4x3': 'ratio-4x3', '21x9': 'ratio-21x9' }[aspect] %}
+{% set container = full_width ? 'jarvis-video jarvis-video--full' : 'jarvis-video container' %}
+{% set _u = (video_url|default(''))|lower %}
+{% set is_file = '.mp4' in _u or '.webm' in _u or '.ogv' in _u or '.ogg' in _u %}
+{# ponytail: normalize watch/share URLs -> embed URLs so any paste works. Split the ORIGINAL (not _u) — YouTube IDs are case-sensitive. #}
+{% set embed_url = video_url %}
+{% if 'youtube.com/watch' in _u %}
+  {% set embed_url = 'https://www.youtube.com/embed/' ~ (video_url|split('v=')|last|split('&')|first) %}
+{% elseif 'youtu.be/' in _u %}
+  {% set embed_url = 'https://www.youtube.com/embed/' ~ (video_url|split('youtu.be/')|last|split('?')|first) %}
+{% elseif 'vimeo.com/' in _u and 'player.vimeo.com' not in _u %}
+  {% set embed_url = 'https://player.vimeo.com/video/' ~ (video_url|split('vimeo.com/')|last|split('?')|first|split('/')|first) %}
+{% endif %}
+<div class="{{ container }} {{ space }}">
+  {% if video_url %}
+    <div class="ratio {{ ratio_class }}">
+      {% if is_file %}
+        <video controls preload="metadata"{{ autoplay ? ' autoplay loop playsinline' : '' }}{{ muted ? ' muted' : '' }}>
+          <source src="{{ video_url }}">
+        </video>
+      {% else %}
+        <iframe src="{{ embed_url }}" title="Video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

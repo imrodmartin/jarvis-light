@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Jarvis card SDC — four image layouts via the `variant` prop.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set variant = variant|default('image-top') %}
+{% set has_image = image.src is defined and image.src %}
+{% set overlay = overlay|default(40) %}
+{% set text_color = text_color|default('light') %}
+{% set base = 'jarvis-card card h-100 jarvis-card--' ~ variant ~ ' ' ~ space %}
+{% if variant == 'background' %}
+  <div class="{{ base }} jarvis-card--text-{{ text_color }} position-relative overflow-hidden border-0"{% if has_image %} style="background-image: url('{{ image.src }}');"{% endif %}>
+    {% if has_image %}<div class="jarvis-card__overlay" style="opacity: {{ overlay / 100 }};" aria-hidden="true"></div>{% endif %}
+    <div class="card-img-overlay d-flex flex-column justify-content-end position-relative">
+      {% if title %}<h3 class="card-title h4">{{ title }}</h3>{% endif %}
+      {% if body %}<div class="card-text">{{ body|raw }}</div>{% endif %}
+      {% if link_text and link_href %}<a href="{{ link_href }}" class="btn btn-light btn-sm mt-2 align-self-start">{{ link_text }}</a>{% endif %}
+    </div>
+  </div>
+{% elseif variant == 'image-left' or variant == 'image-right' %}
+  <div class="{{ base }}">
+    <div class="row g-0 {{ variant == 'image-right' ? 'flex-md-row-reverse' : '' }}">
+      {% if has_image %}
+        <div class="col-md-5">
+          <img src="{{ image.src }}" alt="{{ image.alt }}" class="jarvis-card__img jarvis-card__img--side w-100 h-100">
+        </div>
+      {% endif %}
+      <div class="{{ has_image ? 'col-md-7' : 'col-12' }}">
+        <div class="card-body">
+          {% if title %}<h3 class="card-title h4">{{ title }}</h3>{% endif %}
+          {% if body %}<div class="card-text">{{ body|raw }}</div>{% endif %}
+          {% if link_text and link_href %}<a href="{{ link_href }}" class="btn btn-primary btn-sm mt-2">{{ link_text }}</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="{{ base }}">
+    {% if has_image %}<img src="{{ image.src }}" alt="{{ image.alt }}" class="card-img-top jarvis-card__img">{% endif %}
+    <div class="card-body">
+      {% if title %}<h3 class="card-title h4">{{ title }}</h3>{% endif %}
+      {% if body %}<div class="card-text">{{ body|raw }}</div>{% endif %}
+      {% if link_text and link_href %}<a href="{{ link_href }}" class="btn btn-primary btn-sm mt-2">{{ link_text }}</a>{% endif %}
+    </div>
+  </div>
+{% endif %}

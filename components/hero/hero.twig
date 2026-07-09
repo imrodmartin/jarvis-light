@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Jarvis hero banner SDC.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set align = align|default('center') %}
+{% set align_class = { start: 'text-start', center: 'text-center', end: 'text-end' }[align] %}
+{% set justify_class = { start: 'justify-content-start', center: 'justify-content-center', end: 'justify-content-end' }[align] %}
+{% set has_image = image.src is defined and image.src %}
+{% set overlay = overlay|default(40) %}
+{% set text_color = text_color|default('light') %}
+<section class="jarvis-hero jarvis-hero--text-{{ text_color }} position-relative d-flex align-items-center {{ align_class }} {{ space }}"{% if has_image %} style="background-image: url('{{ image.src }}');"{% endif %}>
+  {% if has_image %}
+    {# opacity is the user floor; hero.js raises it when white text fails WCAG AA contrast #}
+    <div class="jarvis-hero__overlay" style="opacity: {{ overlay / 100 }};" aria-hidden="true"></div>
+  {% endif %}
+  <div class="container position-relative jarvis-hero__inner py-5">
+    <div class="row {{ justify_class }}">
+      <div class="col-lg-9 col-xl-8">
+        {% if heading %}<h1 class="jarvis-hero__heading display-3 fw-bold mb-3">{{ heading }}</h1>{% endif %}
+        {% if subheading %}<p class="jarvis-hero__subheading lead mb-4">{{ subheading }}</p>{% endif %}
+        {% if cta_text and cta_href %}<a href="{{ cta_href }}" class="btn btn-primary btn-lg">{{ cta_text }}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>

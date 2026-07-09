@@ -1,0 +1,13 @@
+name: 'Jarvis Theme'
+description: 'Enables the Jarvis theme, its required contrib modules, and base config (custom image styles + focal-point crop type + theme settings).'
+type: 'Theme'
+install:
+  - twig_tweak
+  - focal_point
+  - canvas
+  - canvas_field_component
+config:
+  actions:
+    system.theme:
+      simpleConfigUpdate:
+        default: jarvis

@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Jarvis section wrapper SDC with a `content` slot.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '', (no_padding|default(false)) ? 'jp-nopad' : '']|join(' ')|trim %}
+{% set width = width|default('normal') %}
+{% set bg = bg|default('none') %}
+{% set bg_class = bg != 'none' ? 'bg-' ~ bg : '' %}
+{% set text_class = (bg == 'dark' or bg == 'primary') ? 'text-white' : '' %}
+{% set container = width == 'full' ? 'container-fluid' : 'container' %}
+<section class="jarvis-section {{ bg_class }} {{ text_class }} {{ space }}">
+  <div class="{{ container }}">
+    {{ content }}
+  </div>
+</section>

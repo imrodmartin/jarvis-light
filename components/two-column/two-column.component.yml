@@ -1,0 +1,92 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: '2 Columns'
+status: stable
+description: 'Two columns side by side on desktop, stacked full-width on mobile.'
+category: 'Jarvis Layout'
+props:
+  type: object
+  properties:
+    width:
+      title: 'Section width'
+      type: string
+      enum: [boxed, full]
+      'meta:enum':
+        boxed: 'Boxed (centred)'
+        full: 'Full width'
+      default: boxed
+    gap:
+      title: 'Column gap'
+      type: string
+      enum: [none, small, normal, large]
+      'meta:enum':
+        none: None
+        small: Small
+        normal: Normal
+        large: Large
+      default: normal
+      examples:
+        - normal
+    ratio:
+      title: 'Column ratio'
+      type: string
+      enum: [even, wide-left, wide-right]
+      'meta:enum':
+        even: 'Even (1:1)'
+        wide-left: 'Wide left (2:1)'
+        wide-right: 'Wide right (1:2)'
+      default: even
+      examples:
+        - even
+    padding:
+      title: Padding
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    padding_size:
+      title: 'Padding size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    margin:
+      title: Margin
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    margin_size:
+      title: 'Margin size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    vertical_padding:
+      title: 'Vertical padding (30px)'
+      type: boolean
+      default: false
+slots:
+  first:
+    title: 'Column 1'
+    description: 'Left / top column.'
+  second:
+    title: 'Column 2'
+    description: 'Right / bottom column.'

@@ -1,0 +1,39 @@
+.jarvis-card {
+  overflow: hidden;
+}
+.jarvis-card__img {
+  object-fit: cover;
+}
+/* ponytail: fixed aspect keeps image-top cards even when source images differ in size */
+.jarvis-card--image-top .jarvis-card__img {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+.jarvis-card__img--side {
+  min-height: 220px;
+}
+.jarvis-card--background {
+  min-height: 320px;
+  background-size: cover;
+  background-position: center;
+}
+.jarvis-card--background .jarvis-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+/* Text color (background variant): light (#fff) or dark (primary). */
+.jarvis-card--text-light,
+.jarvis-card--text-light :is(.card-title, .card-text) {
+  color: #fff;
+}
+.jarvis-card--text-dark,
+.jarvis-card--text-dark :is(.card-title, .card-text) {
+  color: var(--bs-primary);
+}
+/* Light text -> black region behind the card for guaranteed contrast. A
+   background image, when present, paints over this; card.js tunes the overlay
+   opacity to keep light text at WCAG AA. */
+.jarvis-card--background.jarvis-card--text-light {
+  background-color: #000;
+}

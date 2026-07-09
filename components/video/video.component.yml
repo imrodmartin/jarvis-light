@@ -1,0 +1,93 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video
+status: stable
+description: 'Responsive video — an embed URL (YouTube/Vimeo) or a direct video file.'
+category: Jarvis
+props:
+  type: object
+  required:
+    - video_url
+  properties:
+    video_url:
+      title: 'Video URL'
+      description: 'YouTube/Vimeo embed URL, or a direct .mp4/.webm file URL.'
+      type: string
+      format: uri-reference
+      examples:
+        - 'https://www.youtube.com/embed/aqz-KE-bpKQ'
+        - '/sites/default/files/demo.mp4'
+    aspect:
+      title: 'Aspect ratio'
+      type: string
+      enum: ['16x9', '4x3', '21x9']
+      'meta:enum':
+        '16x9': '16:9'
+        '4x3': '4:3'
+        '21x9': '21:9'
+      default: '16x9'
+      examples:
+        - '16x9'
+    full_width:
+      title: 'Full width'
+      type: boolean
+      default: false
+      examples:
+        - false
+    autoplay:
+      title: 'Autoplay (files only)'
+      type: boolean
+      default: false
+      examples:
+        - false
+    muted:
+      title: 'Muted (files only)'
+      type: boolean
+      default: false
+      examples:
+        - false
+    padding:
+      title: Padding
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    padding_size:
+      title: 'Padding size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    margin:
+      title: Margin
+      type: string
+      enum: [none, all, top, bottom, left, right]
+      'meta:enum':
+        none: None
+        all: 'All sides'
+        top: Top
+        bottom: Bottom
+        left: Left
+        right: Right
+      default: none
+    margin_size:
+      title: 'Margin size'
+      type: string
+      enum: [small, medium, large]
+      'meta:enum':
+        small: 'Small (10px)'
+        medium: 'Medium (20px)'
+        large: 'Large (30px)'
+      default: medium
+    vertical_padding:
+      title: 'Vertical padding (30px)'
+      type: boolean
+      default: false

@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Jarvis image SDC.
+ */
+#}
+{% set space = [(padding is defined and padding != 'none') ? 'jp-p-' ~ padding ~ '-' ~ (padding_size|default('medium')) : '', (margin is defined and margin != 'none') ? 'jp-m-' ~ margin ~ '-' ~ (margin_size|default('medium')) : '', (vertical_padding|default(false)) ? 'jp-vpad' : '']|join(' ')|trim %}
+{% set has_image = image.src is defined and image.src %}
+{# Apply a named image style when chosen; needs the original stream-wrapper URI. #}
+{% set styled = (image_style is defined and image_style and image_style != 'original' and image_uri is defined and image_uri) ? image_uri|image_style(image_style) : null %}
+{% set img_src = styled ?: image.src %}
+{% set wrapper = full_width ? 'jarvis-image jarvis-image--full' : 'jarvis-image container' %}
+<figure class="{{ wrapper }} mb-0 {{ space }}">
+  {% if has_image %}
+    <img src="{{ img_src }}" alt="{{ image.alt }}"{% if not styled and image.width %} width="{{ image.width }}"{% endif %}{% if not styled and image.height %} height="{{ image.height }}"{% endif %} class="img-fluid w-100 jarvis-image__img" loading="lazy">
+  {% endif %}
+  {% if caption %}<figcaption class="jarvis-image__caption text-body-secondary small mt-2">{{ caption }}</figcaption>{% endif %}
+</figure>
