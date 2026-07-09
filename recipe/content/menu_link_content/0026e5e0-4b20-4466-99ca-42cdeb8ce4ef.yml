@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 0026e5e0-4b20-4466-99ca-42cdeb8ce4ef
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    1d5378ec-d53a-47b2-82d1-2a92ef16dd77: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Test Blog'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      title: ''
+      options: {  }
+      target_uuid: 1d5378ec-d53a-47b2-82d1-2a92ef16dd77
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: -48
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true

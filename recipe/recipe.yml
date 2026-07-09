@@ -20,6 +20,9 @@ config:
     system.theme:
       simpleConfigUpdate:
         default: jarvis
+    system.site:
+      simpleConfigUpdate:
+        page.front: /test-page
     block.block.jarvis_account_menu:
       simpleConfigUpdate:
         status: true
