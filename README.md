@@ -11,16 +11,10 @@ Ships a recipe that pulls in and enables everything it needs.
 
 ## Install
 
-Add this repo as a Composer source in your project's `composer.json`, then require it:
-
-```jsonc
-// composer.json
-"repositories": [
-    { "type": "vcs", "url": "https://github.com/imrodmartin/jarvis" }
-]
-```
+Register this repo as a Composer VCS source, then require it:
 
 ```bash
+composer config repositories.jarvis vcs https://github.com/imrodmartin/jarvis
 composer require imrodmartin/jarvis
 ```
 
