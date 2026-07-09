@@ -1,0 +1,10 @@
+langcode: en
+status: false
+dependencies:
+  theme:
+    - jarvis
+id: jarvis.page_title
+region: page_title
+theme: jarvis
+component_tree: {  }
+

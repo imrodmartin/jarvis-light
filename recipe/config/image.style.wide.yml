@@ -1,7 +1,6 @@
 langcode: en
 status: true
 dependencies: {  }
-  default_config_hash: vbPSqe3wbFSkaEY0zGy3NVpofBxcTZYrT6N2YPQX7nI
 name: wide
 label: 'Wide (1090)'
 effects:
