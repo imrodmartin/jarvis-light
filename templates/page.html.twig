@@ -74,12 +74,15 @@
     <div class="jarvis-region jarvis-region--full jarvis-page-title">{{ page.page_title }}</div>
   {% endif %}
 
-  {# Rendered eagerly (like the sidebars) so an enabled-but-empty Canvas
-     region collapses — the .jarvis-hero class carries the hero component's
-     min-height + gradient, which would otherwise paint an empty band. #}
-  {% set hero = page.hero|render|trim %}
-  {% if hero %}
-    <div class="jarvis-region jarvis-region--full jarvis-hero">{{ hero|raw }}</div>
+  {# hero_markup / hero_empty come from jarvis_preprocess_page(): emptiness is
+     tested with Canvas's editor comment markers stripped, so an enabled-but-
+     empty region collapses in the editor too instead of painting the hero
+     component's 420px gradient (the wrapper shares its .jarvis-hero class).
+     Empty markers still print so the editor keeps its region map. #}
+  {% if not hero_empty %}
+    <div class="jarvis-region jarvis-region--full jarvis-hero">{{ hero_markup|raw }}</div>
+  {% else %}
+    {{ hero_markup|raw }}
   {% endif %}
 
   {% if page.highlighted %}
@@ -93,37 +96,43 @@
       <div class="container jarvis-region jarvis-content-top">{{ page.content_top }}</div>
     {% endif %}
 
-    {# Render regions to strings: a Drupal region array is truthy even when it
-       holds no blocks (carries #cache/metadata), so test the trimmed output. #}
-    {% set sidebar_left = page.sidebar_left|render|trim %}
-    {% set sidebar_right = page.sidebar_right|render|trim %}
-    {% set has_sidebar = sidebar_left or sidebar_right %}
+    {# sidebar_*_markup / _empty from jarvis_preprocess_page() — like the hero,
+       emptiness ignores Canvas's editor comment markers so empty sidebars
+       don't claim their columns in the editor and squish the content. #}
+    {% set has_sidebar = not sidebar_left_empty or not sidebar_right_empty %}
     {% if has_sidebar %}
       {# Boxed layout with sidebars. `col` lets content flex to fill whatever
          the present sidebars leave — handles 1 or 2 sidebars automatically. #}
       <div class="container jarvis-region jarvis-main">
         <div class="row g-4">
-          {% if sidebar_left %}
+          {% if not sidebar_left_empty %}
             <aside class="col-12 col-lg-3 jarvis-sidebar jarvis-sidebar--left" role="complementary">
-              {{ sidebar_left|raw }}
+              {{ sidebar_left_markup|raw }}
             </aside>
+          {% else %}
+            {{ sidebar_left_markup|raw }}
           {% endif %}
           <div class="col jarvis-content">
             {{ page.content }}
           </div>
-          {% if sidebar_right %}
+          {% if not sidebar_right_empty %}
             <aside class="col-12 col-lg-3 jarvis-sidebar jarvis-sidebar--right" role="complementary">
-              {{ sidebar_right|raw }}
+              {{ sidebar_right_markup|raw }}
             </aside>
+          {% else %}
+            {{ sidebar_right_markup|raw }}
           {% endif %}
         </div>
       </div>
     {% else %}
       {# No sidebars: edge-to-edge so Canvas columns can go full width.
-         Non-Canvas content self-boxes via the column layout's own container. #}
+         Non-Canvas content self-boxes via the column layout's own container.
+         Empty-region markers still print for the editor's region map. #}
+      {{ sidebar_left_markup|raw }}
       <div class="jarvis-content jarvis-content--full">
         {{ page.content }}
       </div>
+      {{ sidebar_right_markup|raw }}
     {% endif %}
 
     {% if page.content_bottom %}

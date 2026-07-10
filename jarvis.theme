@@ -138,6 +138,50 @@ function _jarvis_fonts() {
 }
 
 /**
+ * Implements hook_preprocess_page().
+ *
+ * Render the collapse-when-empty regions (hero, sidebars) once and flag
+ * whether they hold real content. In the Canvas editor every enabled
+ * PageRegion emits HTML comment markers even when empty, so a plain
+ * `|render|trim` test in the template reads empty regions as full — the hero
+ * painted its 420px gradient band and both sidebars claimed their columns,
+ * squishing the content. Strip comments before testing; the template still
+ * prints the raw markers for empty regions so the editor keeps its region map.
+ */
+function jarvis_preprocess_page(array &$variables) {
+  $renderer = \Drupal::service('renderer');
+  foreach (['hero', 'sidebar_left', 'sidebar_right'] as $region) {
+    $markup = !empty($variables['page'][$region])
+      ? (string) $renderer->render($variables['page'][$region])
+      : '';
+    $variables[$region . '_markup'] = $markup;
+    // Canvas's editor wraps even an empty region in comment markers plus a
+    // bare <div>, so "empty" = no text once tags/comments are stripped AND no
+    // visual element (an image-only sidebar has no text but isn't empty).
+    $stripped = preg_replace('/<!--.*?-->/s', '', $markup);
+    $variables[$region . '_empty'] = trim(strip_tags($stripped)) === ''
+      && !preg_match('/<(img|picture|video|iframe|svg|canvas|embed)\b/i', $stripped);
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ *
+ * Bootstrap-ify the View/Edit/Revisions tabs: the templates supply the
+ * .nav/.nav-item markup, this puts .nav-link (+ .active) on the links.
+ */
+function jarvis_preprocess_menu_local_task(array &$variables) {
+  $classes = ['nav-link'];
+  if (!empty($variables['is_active'])) {
+    $classes[] = 'active';
+  }
+  $variables['link']['#options']['attributes']['class'] = array_merge(
+    $variables['link']['#options']['attributes']['class'] ?? [],
+    $classes
+  );
+}
+
+/**
  * Parse a Google Fonts variant ("400", "700i", "italic") into weight + style.
  */
 function _jarvis_font_variant($variant) {
