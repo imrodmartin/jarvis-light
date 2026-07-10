@@ -248,3 +248,16 @@ body {
 .jarvis-header a { color: var(--jarvis-header-link-color); }
 
 h1, h2, h3, h4, h5, h6 { color: var(--jarvis-heading-color); }
+
+/* Font sizes from theme settings. The --jarvis-fs-* variables are emitted by
+   jarvis_preprocess_html (desktop on :root, mobile overrides under 768px).
+   Base is px on <html> so the rem-based headings scale with it. The .h*
+   utility classes are included so Bootstrap's responsive calc() sizes don't
+   reassert themselves. */
+html { font-size: var(--jarvis-fs-base, 100%); }
+h1, .h1 { font-size: var(--jarvis-fs-h1, 2.5rem); }
+h2, .h2 { font-size: var(--jarvis-fs-h2, 2rem); }
+h3, .h3 { font-size: var(--jarvis-fs-h3, 1.75rem); }
+h4, .h4 { font-size: var(--jarvis-fs-h4, 1.5rem); }
+h5, .h5 { font-size: var(--jarvis-fs-h5, 1.25rem); }
+h6, .h6 { font-size: var(--jarvis-fs-h6, 1rem); }

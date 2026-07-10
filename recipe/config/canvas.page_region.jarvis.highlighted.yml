@@ -1,11 +1,10 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - canvas.component.block.help_block
     - canvas.component.block.local_actions_block
     - canvas.component.block.local_tasks_block
-    - canvas.component.block.page_title_block
     - canvas.component.block.system_messages_block
   theme:
     - jarvis
@@ -26,13 +25,6 @@ component_tree:
     component_version: 1609d44df6c8b26a
     inputs:
       label: 'Status messages'
-      label_display: '0'
-  98ca6d03-d4db-4879-a65a-8de921610e00:
-    uuid: 98ca6d03-d4db-4879-a65a-8de921610e00
-    component_id: block.page_title_block
-    component_version: 9eea215a62e33427
-    inputs:
-      label: 'Page title'
       label_display: '0'
   a5f8bd35-d90c-4935-b09b-abbb00753fb0:
     uuid: a5f8bd35-d90c-4935-b09b-abbb00753fb0
@@ -59,4 +51,3 @@ component_tree:
       label_display: '0'
       primary: false
       secondary: true
-

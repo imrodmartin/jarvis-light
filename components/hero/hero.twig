@@ -19,7 +19,7 @@
   {% endif %}
   <div class="container position-relative jarvis-hero__inner py-5">
     <div class="row {{ justify_class }}">
-      <div class="col-lg-9 col-xl-8">
+      <div class="jarvis-hero__content">
         {% set h = heading_level|default('h1') %}
         {% if heading %}<{{ h }} class="jarvis-hero__heading display-3 fw-bold mb-3">{{ heading }}</{{ h }}>{% endif %}
         {% if subheading %}<p class="jarvis-hero__subheading lead mb-4">{{ subheading }}</p>{% endif %}

@@ -74,8 +74,12 @@
     <div class="jarvis-region jarvis-region--full jarvis-page-title">{{ page.page_title }}</div>
   {% endif %}
 
-  {% if page.hero %}
-    <div class="jarvis-region jarvis-region--full jarvis-hero">{{ page.hero }}</div>
+  {# Rendered eagerly (like the sidebars) so an enabled-but-empty Canvas
+     region collapses — the .jarvis-hero class carries the hero component's
+     min-height + gradient, which would otherwise paint an empty band. #}
+  {% set hero = page.hero|render|trim %}
+  {% if hero %}
+    <div class="jarvis-region jarvis-region--full jarvis-hero">{{ hero|raw }}</div>
   {% endif %}
 
   {% if page.highlighted %}

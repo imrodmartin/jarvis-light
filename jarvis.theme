@@ -28,6 +28,27 @@ function _jarvis_colors() {
 }
 
 /**
+ * Font-size slots: key => [label, desktop default, mobile default, unit].
+ *
+ * Base is in px (it sets the root rem size on <html>); headings are in rem so
+ * they scale with the base. Shared by theme-settings.php (form) and
+ * hook_preprocess_html (output). Settings are jarvis_fs_{key} and
+ * jarvis_fs_mobile_{key}; overrides.css consumes the emitted
+ * --jarvis-fs-* variables.
+ */
+function _jarvis_font_sizes() {
+  return [
+    'base' => [t('Base font size'), 16, 16, 'px'],
+    'h1'   => [t('H1'), 2.5, 2, 'rem'],
+    'h2'   => [t('H2'), 2, 1.75, 'rem'],
+    'h3'   => [t('H3'), 1.75, 1.5, 'rem'],
+    'h4'   => [t('H4'), 1.5, 1.25, 'rem'],
+    'h5'   => [t('H5'), 1.25, 1.125, 'rem'],
+    'h6'   => [t('H6'), 1, 1, 'rem'],
+  ];
+}
+
+/**
  * Implements hook_preprocess_html().
  *
  * Emits the chosen colors as CSS variables in an inline <style>. Uses html:root
@@ -60,6 +81,29 @@ function jarvis_preprocess_html(array &$variables) {
       'jarvis-colors',
     ];
   }
+
+  // Font sizes: desktop values on :root, mobile overrides under 768px. Only
+  // numeric values are emitted (is_numeric + float cast), so a corrupt
+  // setting can't inject CSS.
+  $desktop = [];
+  $mobile = [];
+  foreach (_jarvis_font_sizes() as $key => $info) {
+    [, $d_default, $m_default, $unit] = $info;
+    $d = theme_get_setting("jarvis_fs_$key");
+    $m = theme_get_setting("jarvis_fs_mobile_$key");
+    $d = is_numeric($d) ? (float) $d : $d_default;
+    $m = is_numeric($m) ? (float) $m : $m_default;
+    $desktop[] = "--jarvis-fs-$key:$d$unit;";
+    $mobile[] = "--jarvis-fs-$key:$m$unit;";
+  }
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'style',
+      '#value' => 'html:root{' . implode('', $desktop) . '}'
+        . '@media (max-width:767.98px){html:root{' . implode('', $mobile) . '}}',
+    ],
+    'jarvis-font-sizes',
+  ];
 
   // Attach the self-hosted fonts stylesheet generated on settings save.
   $css = 'public://jarvis-fonts/jarvis-fonts.css';

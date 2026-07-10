@@ -37,3 +37,14 @@ font-settings:
     - core/once
     - core/drupal
     - core/drupalSettings
+
+fs-settings:
+  version: 1.x
+  css:
+    theme:
+      css/fs-settings.css: {}
+  js:
+    js/fs-settings.js: {}
+  dependencies:
+    - core/once
+    - core/drupal

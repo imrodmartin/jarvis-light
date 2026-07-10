@@ -1,0 +1,9 @@
+/* Font-size setting previews: rendered sample inline after the input, inside
+   the field suffix. */
+.jarvis-fs-preview {
+  display: inline-block;
+  margin-left: 0.5rem;
+  line-height: 1.1;
+  vertical-align: middle;
+  white-space: nowrap;
+}

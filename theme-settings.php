@@ -137,6 +137,49 @@ function jarvis_form_system_theme_settings_alter(array &$form, FormStateInterfac
   $form['jarvis_fonts']['#attached']['library'][] = 'jarvis/font-settings';
   $form['jarvis_fonts']['#attached']['drupalSettings']['jarvisFonts']['families'] = $families;
   $form['#submit'][] = 'jarvis_font_settings_submit';
+
+  // ---------------------------------------------------------------------------
+  // Font sizes.
+  // ---------------------------------------------------------------------------
+  $form['jarvis_font_sizes'] = [
+    '#type' => 'details',
+    '#title' => t('Font sizes'),
+    '#open' => TRUE,
+    '#weight' => -14,
+    '#description' => t('Base size is in px and sets the root size; headings are in rem so they scale with it. Mobile values apply below 768px.'),
+  ];
+  foreach (['' => t('Desktop'), 'mobile_' => t('Mobile (under 768px)')] as $prefix => $group_label) {
+    $group = $prefix === '' ? 'desktop' : 'mobile';
+    $form['jarvis_font_sizes'][$group] = [
+      '#type' => 'fieldset',
+      '#title' => $group_label,
+    ];
+    foreach (_jarvis_font_sizes() as $key => $info) {
+      [$label, $d_default, $m_default, $unit] = $info;
+      $default = $prefix === '' ? $d_default : $m_default;
+      $val = theme_get_setting("jarvis_fs_{$prefix}{$key}");
+      $form['jarvis_font_sizes'][$group]["jarvis_fs_{$prefix}{$key}"] = [
+        '#type' => 'number',
+        '#title' => $label,
+        '#default_value' => is_numeric($val) ? $val : $default,
+        // Unit plus the live preview sized by js/fs-settings.js — in the
+        // field suffix so it sits inline next to the input.
+        '#field_suffix' => Markup::create(
+          $unit . ' <span class="jarvis-fs-preview" data-group="' . $group . '" data-slot="' . $key . '" aria-hidden="true"></span>'
+        ),
+        '#min' => $unit === 'px' ? 10 : 0.5,
+        '#max' => $unit === 'px' ? 32 : 8,
+        '#step' => $unit === 'px' ? 1 : 0.005,
+        '#required' => TRUE,
+        '#attributes' => [
+          'class' => ['jarvis-fs-input'],
+          'data-group' => $group,
+          'data-slot' => $key,
+        ],
+      ];
+    }
+  }
+  $form['jarvis_font_sizes']['#attached']['library'][] = 'jarvis/fs-settings';
 }
 
 /**

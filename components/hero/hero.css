@@ -18,6 +18,17 @@
 .jarvis-hero__inner {
   z-index: 1;
 }
+/* Text column: full width on small screens, 85% from lg up (was Bootstrap
+   col-lg-9/col-xl-8 = 75%/66%, too narrow). Plain width, not a col- class,
+   because the grid has no 85% step. */
+.jarvis-hero__content {
+  width: 100%;
+}
+@media (min-width: 992px) {
+  .jarvis-hero__content {
+    width: 85%;
+  }
+}
 /* Text color: light (#fff) or dark (#2d6cdf), from the text_color prop. */
 .jarvis-hero--text-light,
 .jarvis-hero--text-light .jarvis-hero__heading,

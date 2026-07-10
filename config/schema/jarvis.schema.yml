@@ -79,3 +79,45 @@ jarvis.settings:
     jarvis_font_blockquote_selector:
       type: string
       label: 'Blockquote font CSS selector'
+    jarvis_fs_base:
+      type: float
+      label: 'Base font size (px)'
+    jarvis_fs_h1:
+      type: float
+      label: 'H1 size (rem)'
+    jarvis_fs_h2:
+      type: float
+      label: 'H2 size (rem)'
+    jarvis_fs_h3:
+      type: float
+      label: 'H3 size (rem)'
+    jarvis_fs_h4:
+      type: float
+      label: 'H4 size (rem)'
+    jarvis_fs_h5:
+      type: float
+      label: 'H5 size (rem)'
+    jarvis_fs_h6:
+      type: float
+      label: 'H6 size (rem)'
+    jarvis_fs_mobile_base:
+      type: float
+      label: 'Mobile base font size (px)'
+    jarvis_fs_mobile_h1:
+      type: float
+      label: 'Mobile H1 size (rem)'
+    jarvis_fs_mobile_h2:
+      type: float
+      label: 'Mobile H2 size (rem)'
+    jarvis_fs_mobile_h3:
+      type: float
+      label: 'Mobile H3 size (rem)'
+    jarvis_fs_mobile_h4:
+      type: float
+      label: 'Mobile H4 size (rem)'
+    jarvis_fs_mobile_h5:
+      type: float
+      label: 'Mobile H5 size (rem)'
+    jarvis_fs_mobile_h6:
+      type: float
+      label: 'Mobile H6 size (rem)'
