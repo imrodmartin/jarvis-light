@@ -46,7 +46,7 @@
 <h1 id="building-the-jarvis-theme-a-beginners-tutorial">Building the Jarvis Theme — A Beginner's Tutorial</h1>
 <p>This is a complete, step-by-step guide to building <strong>Jarvis</strong> from an empty folder: a
 DXPR-style Drupal 11 theme with Bootstrap 5, a set of <strong>Single Directory Components
-(SDC)</strong>, full <strong>Drupal Canvas</strong> integration, colour + font theme settings, and a
+(SDC)</strong>, full <strong>Drupal Canvas</strong> integration, color + font theme settings, and a
 <strong>recipe</strong> that installs everything with one command.</p>
 <p>It assumes you have never built a Drupal theme before. Every file is explained. By the
 end you'll understand <em>why</em> each piece exists, not just <em>what</em> to type.</p>
@@ -62,7 +62,7 @@ end you'll understand <em>why</em> each piece exists, not just <em>what</em> to 
 <li><a href="#step-4-first-sdc">Step 4 — Your first Single Directory Component</a></li>
 <li><a href="#step-5-slots">Step 5 — Components with slots (Section &amp; Columns)</a></li>
 <li><a href="#step-6-hero">Step 6 — A component with an image (Hero)</a></li>
-<li><a href="#step-7-colours">Step 7 — Colour settings</a></li>
+<li><a href="#step-7-colors">Step 7 — Color settings</a></li>
 <li><a href="#step-8-fonts">Step 8 — Font settings (self-hosted Google Fonts)</a></li>
 <li><a href="#step-9-canvas">Step 9 — Wiring the theme into Drupal Canvas</a></li>
 <li><a href="#step-10-content-templates">Step 10 — Content templates (fielded nodes → components)</a></li>
@@ -78,7 +78,7 @@ end you'll understand <em>why</em> each piece exists, not just <em>what</em> to 
 <li>A responsive page shell (header, nav, hero, sidebars, footer) built on Bootstrap 5.</li>
 <li>A palette of drag-and-drop <strong>components</strong> (Hero, Card, Section, Text, Image, Video,
   1/2/3-column layouts) that non-developers place visually in <strong>Canvas</strong>.</li>
-<li>A theme settings screen where an admin picks brand <strong>colours</strong> and <strong>fonts</strong> with no
+<li>A theme settings screen where an admin picks brand <strong>colors</strong> and <strong>fonts</strong> with no
   code.</li>
 <li>A <strong>recipe</strong> so the whole thing — theme, modules, demo content — installs in one step.</li>
 </ul>
@@ -86,8 +86,8 @@ end you'll understand <em>why</em> each piece exists, not just <em>what</em> to 
 <pre class="codehilite"><code>web/themes/custom/jarvis/
 ├── jarvis.info.yml          # tells Drupal &quot;I am a theme&quot;, declares regions
 ├── jarvis.libraries.yml     # declares CSS/JS bundles
-├── jarvis.theme             # PHP: preprocess hooks (colours, fonts output)
-├── theme-settings.php       # PHP: the admin settings form (colour + font pickers)
+├── jarvis.theme             # PHP: preprocess hooks (colors, fonts output)
+├── theme-settings.php       # PHP: the admin settings form (color + font pickers)
 ├── logo.svg
 ├── templates/
 │   └── page.html.twig       # the page shell / region layout
@@ -143,7 +143,7 @@ end you'll understand <em>why</em> each piece exists, not just <em>what</em> to 
 </tr>
 <tr>
 <td><strong>Props &amp; Slots</strong></td>
-<td>A component's inputs. <strong>Props</strong> are simple values (text, a number, a colour). <strong>Slots</strong> are <em>areas you drop other components into</em> (like a column that holds cards).</td>
+<td>A component's inputs. <strong>Props</strong> are simple values (text, a number, a color). <strong>Slots</strong> are <em>areas you drop other components into</em> (like a column that holds cards).</td>
 </tr>
 <tr>
 <td><strong>Drupal Canvas</strong></td>
@@ -161,7 +161,7 @@ end you'll understand <em>why</em> each piece exists, not just <em>what</em> to 
 </table>
 <p><strong>The mental model:</strong> you build <em>components</em> once (developer job), then a <em>site builder</em>
 composes pages out of them in Canvas (no code). The theme settings let an admin
-re-skin the whole thing (colours/fonts) without touching CSS.</p>
+re-skin the whole thing (colors/fonts) without touching CSS.</p>
 <hr />
 <p><a name="3-prerequisites"></a></p>
 <h2 id="3-prerequisites-site-setup">3. Prerequisites &amp; site setup</h2>
@@ -799,19 +799,19 @@ image styles like <code>hero_banner</code> and <code>wide</code> are shipped as 
 template, use <code>|image_style</code> in the SDC — <strong>don't</strong> try to use a Canvas "adapter" for it
 (adapters are not allowed inside content templates).</p>
 <hr />
-<p><a name="step-7-colours"></a></p>
-<h2 id="step-7-colour-settings">Step 7 — Colour settings</h2>
-<p>Goal: an admin picks brand colours on the theme settings page, and the whole site re-skins
-— no CSS edits. The trick: <strong>write the chosen colours out as CSS custom properties</strong>, and
+<p><a name="step-7-colors"></a></p>
+<h2 id="step-7-color-settings">Step 7 — Color settings</h2>
+<p>Goal: an admin picks brand colors on the theme settings page, and the whole site re-skins
+— no CSS edits. The trick: <strong>write the chosen colors out as CSS custom properties</strong>, and
 have <code>overrides.css</code> consume those properties.</p>
 <p>Three moving parts:</p>
 <ol>
-<li>A <strong>shared list</strong> of colour slots (so the form and the output never drift).</li>
-<li>A <strong>settings form</strong> (<code>theme-settings.php</code>) with a hex field + native colour picker.</li>
-<li>A <strong>preprocess hook</strong> (<code>jarvis.theme</code>) that prints the chosen colours as an inline
+<li>A <strong>shared list</strong> of color slots (so the form and the output never drift).</li>
+<li>A <strong>settings form</strong> (<code>theme-settings.php</code>) with a hex field + native color picker.</li>
+<li>A <strong>preprocess hook</strong> (<code>jarvis.theme</code>) that prints the chosen colors as an inline
    <code>&lt;style&gt;</code>.</li>
 </ol>
-<h3 id="7a-the-shared-colour-map-jarvistheme">7a. The shared colour map (<code>jarvis.theme</code>)</h3>
+<h3 id="7a-the-shared-color-map-jarvistheme">7a. The shared color map (<code>jarvis.theme</code>)</h3>
 <pre class="codehilite"><code class="language-php">/**
  * setting key =&gt; [label, CSS custom property, needs -rgb, default].
  */
@@ -867,7 +867,7 @@ function jarvis_form_system_theme_settings_alter(array &amp;$form, FormStateInte
         'pattern' =&gt; '#[0-9a-fA-F]{6}',
         'placeholder' =&gt; '#ffffff',
       ],
-      // A native colour picker as the field prefix; JS keeps it in sync with the text field.
+      // A native color picker as the field prefix; JS keeps it in sync with the text field.
       '#field_prefix' =&gt; Markup::create(
         '&lt;input type=&quot;color&quot; class=&quot;jarvis-color-pick&quot; value=&quot;'
         . htmlspecialchars($swatch, ENT_QUOTES) . '&quot;&gt;'
@@ -881,7 +881,7 @@ function jarvis_form_system_theme_settings_alter(array &amp;$form, FormStateInte
 
 /**
  * Reject anything that isn't a #rrggbb hex (or empty). Security: this is what
- * stops someone injecting CSS through a colour value.
+ * stops someone injecting CSS through a color value.
  */
 function jarvis_color_settings_validate(array &amp;$form, FormStateInterface $form_state) {
   foreach (array_keys(_jarvis_colors()) as $key) {
@@ -893,14 +893,14 @@ function jarvis_color_settings_validate(array &amp;$form, FormStateInterface $fo
 }
 </code></pre>
 
-<p>Each colour is a hex <strong>textfield</strong> with a native <code>&lt;input type="color"&gt;</code> glued on as the
-prefix. The colour input is just the picker/preview; only the text field actually submits.
+<p>Each color is a hex <strong>textfield</strong> with a native <code>&lt;input type="color"&gt;</code> glued on as the
+prefix. The color input is just the picker/preview; only the text field actually submits.
 <code>css/color-settings.js</code> keeps the two in sync. <strong>Always validate</strong> — the strict hex regex
 is what prevents CSS injection through a settings value.</p>
-<h3 id="7c-output-the-colours-jarvistheme-preprocess">7c. Output the colours (<code>jarvis.theme</code> preprocess)</h3>
+<h3 id="7c-output-the-colors-jarvistheme-preprocess">7c. Output the colors (<code>jarvis.theme</code> preprocess)</h3>
 <pre class="codehilite"><code class="language-php">/**
  * Implements hook_preprocess_html().
- * Emit chosen colours as CSS variables in an inline &lt;style&gt;.
+ * Emit chosen colors as CSS variables in an inline &lt;style&gt;.
  */
 function jarvis_preprocess_html(array &amp;$variables) {
   $lines = [];
@@ -1017,7 +1017,7 @@ if ($real &amp;&amp; file_exists($real)) {
 }
 </code></pre>
 
-<p>The takeaway pattern is identical to colours: <strong>shared map → form → save/output.</strong> Colours
+<p>The takeaway pattern is identical to colors: <strong>shared map → form → save/output.</strong> Colors
 output inline on every request; fonts are generated once at save time into a file that's
 then attached.</p>
 <hr />
@@ -1178,13 +1178,13 @@ config:
 <li><code>recipe/config/</code> holds the field storage/instances, the <code>jarvis_sample</code> node type,
      image styles (<code>hero_banner</code>, <code>wide</code>), the focal-point crop type, media types, the
      Canvas page regions (Step 9), the content template (Step 10), and <code>jarvis.settings.yml</code>
-     (the default colours/fonts).</li>
+     (the default colors/fonts).</li>
 <li><code>recipe/content/</code> holds demo content as YAML (a Test Blog node, a Test Page Canvas
      page, media, files, menu links) via <strong>default_content</strong>. UUID-named files are entities;
      the raw <code>.png</code>/<code>.jpg</code> are the referenced image files.</li>
 </ol>
 <p>To build these config files, you <em>don't</em> write them by hand. You configure everything on a
-working site (create the content type, add fields, set up Canvas, pick colours), then
+working site (create the content type, add fields, set up Canvas, pick colors), then
 export:</p>
 <pre class="codehilite"><code class="language-bash">ddev drush config:export
 # copy the relevant jarvis.*, canvas.*, field.*, node.type.*, image.style.* files
@@ -1192,7 +1192,7 @@ export:</p>
 </code></pre>
 
 <p><code>recipe/config/jarvis.settings.yml</code> is worth a peek — it's the exported default theme
-settings, so a fresh install starts with the right brand colours and fonts already chosen:</p>
+settings, so a fresh install starts with the right brand colors and fonts already chosen:</p>
 <pre class="codehilite"><code class="language-yaml">logo:
   use_default: 1
 jarvis_color_primary: '#2d6cdf'
@@ -1228,8 +1228,8 @@ ddev drush uli
 <ol>
 <li><strong>Front end loads</strong> with Bootstrap styling and your logo in the nav. → theme + libraries
    OK.</li>
-<li><strong><code>/admin/appearance/settings/jarvis</code></strong> shows the Colours and Fonts sections. Change a
-   colour, save, reload → the site re-skins. → Steps 7–8 OK.</li>
+<li><strong><code>/admin/appearance/settings/jarvis</code></strong> shows the Colors and Fonts sections. Change a
+   color, save, reload → the site re-skins. → Steps 7–8 OK.</li>
 <li><strong>Save the Fonts form</strong> → check <code>sites/default/files/jarvis-fonts/jarvis-fonts.css</code>
    exists and the site uses the new fonts. → self-hosting OK.</li>
 <li><strong>Edit the Test Page in Canvas</strong> → your <code>Jarvis</code> and <code>Jarvis Layout</code> components appear in
@@ -1285,11 +1285,11 @@ node.type.* / image.style.*</code> files into <code>recipe/config/</code>.</p>
 </tr>
 <tr>
 <td><code>jarvis.theme</code></td>
-<td>Preprocess hooks: output colours + attach fonts.</td>
+<td>Preprocess hooks: output colors + attach fonts.</td>
 </tr>
 <tr>
 <td><code>theme-settings.php</code></td>
-<td>The colour + font admin form and its handlers.</td>
+<td>The color + font admin form and its handlers.</td>
 </tr>
 <tr>
 <td><code>components/*/</code></td>
