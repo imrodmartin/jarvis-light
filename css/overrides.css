@@ -78,9 +78,10 @@ body {
 .jarvis-header [id*="branding"] img,
 .jarvis-primary-menu [id*="branding"] img { width: 400px; max-width: 100%; height: auto; }
 
-/* Canvas renders the primary-menu blocks with random UUID ids inside
-   .offcanvas-body (menu first, logo second in the DOM), so target by structure,
-   not id. One row: logo left (capped 400px), menu 50px to its right. */
+/* Canvas renders the primary-menu blocks with random UUID ids, so the Twig
+   split by block id never matches; js/nav-branding.js moves the logo link out
+   of the offcanvas drawer into .jarvis-branding-wrap so it stays visible on
+   mobile (the drawer is hidden until the hamburger is tapped). */
 /* Break the nav row out of the centered .container so it spans the viewport;
    100px left pad pins the logo near the browser's left edge — desktop only,
    on mobile it would eat a quarter of the screen from the logo/hamburger row. */
@@ -88,9 +89,10 @@ body {
 @media (min-width: 992px) {
   .jarvis-primary-menu { padding-left: 100px; }
 }
+/* Logo left (capped 400px, shrinks on narrow screens), menu 50px to its right. */
+.jarvis-branding-wrap { min-width: 0; }
+.jarvis-branding-wrap img { width: 400px; max-width: 100%; height: auto; }
 .jarvis-primary-menu .offcanvas-body > div { display: flex; align-items: center; }
-.jarvis-primary-menu .offcanvas-body > div > *:has(img) { order: -1; }
-.jarvis-primary-menu .offcanvas-body a[rel="home"] img { width: 400px; max-width: 100%; height: auto; }
 .jarvis-primary-menu .offcanvas-body nav[role="navigation"] { margin-left: 50px; }
 
 /* Full-width columns: kill container-fluid gutter, row negative margins, AND
