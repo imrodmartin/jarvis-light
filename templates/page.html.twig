@@ -64,6 +64,10 @@
     <div class="container jarvis-region jarvis-breadcrumb">{{ page.breadcrumb }}</div>
   {% endif %}
 
+  {% if page.help %}
+    <div class="container jarvis-region jarvis-help">{{ page.help }}</div>
+  {% endif %}
+
   {# Full-width #}
   {# Front page hides its title regardless of which node/Canvas page it is. #}
   {% if page.page_title and not is_front %}

@@ -11,6 +11,7 @@ regions:
   header: Header
   primary_menu: 'Primary menu'
   breadcrumb: Breadcrumb
+  help: Help
   page_title: 'Page title'
   hero: Hero
   highlighted: Highlighted
