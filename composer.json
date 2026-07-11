@@ -1,9 +1,9 @@
 {
-    "name": "imrodmartin/jarvis",
-    "description": "DXPR-style SDC theme with Bootstrap 5, built for Drupal Canvas and Layout Builder.",
+    "name": "imrodmartin/jarvis-light",
+    "description": "DXPR-style SDC theme with Bootstrap 5, built for Drupal Canvas and Layout Builder. Frozen snapshot (jarvis-light).",
     "type": "drupal-custom-theme",
     "license": "GPL-2.0-or-later",
-    "homepage": "https://github.com/imrodmartin/jarvis",
+    "homepage": "https://github.com/imrodmartin/jarvis-light",
     "require": {
         "php": ">=8.3",
         "drupal/core": "^11 || ^12",

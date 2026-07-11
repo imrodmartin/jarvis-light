@@ -1,7 +1,10 @@
-# Jarvis
+# Jarvis Light
 
 DXPR-style SDC theme with Bootstrap 5, built for Drupal Canvas and Layout Builder.
 Ships a recipe that pulls in and enables everything it needs.
+
+> **Frozen snapshot.** This is `jarvis-light`, pinned to the 2026-07-10 state.
+> Active development lives in [`imrodmartin/jarvis`](https://github.com/imrodmartin/jarvis).
 
 ## Requirements
 
@@ -15,8 +18,8 @@ Ships a recipe that pulls in and enables everything it needs.
 Register this repo as a Composer VCS source, then require it:
 
 ```bash
-composer config repositories.jarvis '{"type":"vcs","url":"https://github.com/imrodmartin/jarvis","no-api":true}'
-composer require imrodmartin/jarvis
+composer config repositories.jarvis-light '{"type":"vcs","url":"https://github.com/imrodmartin/jarvis-light","no-api":true}'
+composer require imrodmartin/jarvis-light
 ```
 
 `no-api` makes Composer clone over git instead of the GitHub API — it avoids the
