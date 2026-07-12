@@ -3,8 +3,8 @@
 DXPR-style SDC theme with Bootstrap 5, built for Drupal Canvas and Layout Builder.
 Ships a recipe that pulls in and enables everything it needs.
 
-> **Frozen snapshot.** This is `jarvis-light`, pinned to the 2026-07-10 state.
-> Active development lives in [`imrodmartin/jarvis`](https://github.com/imrodmartin/jarvis).
+> **Frozen snapshot.** This is `jarvis-light`, the theme we use in training.
+
 
 ## Requirements
 
