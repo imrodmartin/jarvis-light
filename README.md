@@ -18,8 +18,8 @@ This install assumes you're using DDEV on local.
 Register this repo as a Composer VCS source, then require it:
 
 ```bash
-composer config repositories.jarvis-light '{"type":"vcs","url":"https://github.com/imrodmartin/jarvis-light","no-api":true}'
-composer require imrodmartin/jarvis-light
+ddev composer config repositories.jarvis-light '{"type":"vcs","url":"https://github.com/imrodmartin/jarvis-light","no-api":true}'
+ddev composer require imrodmartin/jarvis-light
 ```
 
 `no-api` makes Composer clone over git instead of the GitHub API — it avoids the
