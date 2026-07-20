@@ -14,7 +14,7 @@ Ships a recipe that pulls in and enables everything it needs.
 - Contrib modules (pulled automatically by Composer): `canvas`, `canvas_field_component`, `focal_point` (→ `crop`), `twig_tweak`
 
 ## Install
-
+This install assumes you're using DDEV on local.
 Register this repo as a Composer VCS source, then require it:
 
 ```bash
@@ -46,14 +46,14 @@ and the recipe's config reference it. Then run, **in this order**:
 #    Canvas registers its parametrized image style and the theme's SDC
 #    components during this rebuild — the recipe's config and demo content
 #    reference them, so they must exist before the recipe runs.
-drush pm:install canvas canvas_field_component
-drush theme:install jarvis
-drush cache:rebuild
+ddev drush pm:install canvas canvas_field_component
+ddev drush theme:install jarvis
+ddev drush cache:rebuild
 
 # 2. Apply the recipe, then rebuild again.
 #    The path is relative to the DOCROOT (web/), not the project root — see below.
-drush recipe themes/custom/jarvis/recipe
-drush cache:rebuild
+ddev drush recipe themes/custom/jarvis/recipe
+ddev drush cache:rebuild
 ```
 
 > **Recipe paths are relative to the docroot.** Before it bootstraps, Drush
