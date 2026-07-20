@@ -2,27 +2,74 @@
 /**
  * @file
  * Jarvis hero banner SDC.
+ *
+ * This is a Single Directory Component (SDC): the Twig template, the CSS and
+ * the prop definitions all live together in components/hero/. Drupal renders
+ * it wherever someone includes or embeds "jarvis:hero".
+ *
+ * The values used below (heading, image, overlay, ...) are the "props" declared
+ * in hero.component.yml. Whoever places the component — Canvas, Layout Builder,
+ * or a Twig include — supplies them.
  */
 #}
+
+{# Pull in the shared spacing macros so every Jarvis component builds its
+   padding/margin utility classes the same way. "as jarvis" is the local
+   nickname we call those macros by. #}
 {% import '@jarvis/jarvis-spacing.html.twig' as jarvis %}
+
+{# Turn the spacing props into a string of Bootstrap classes (e.g. "pt-3 mb-4").
+   |default(...) supplies a fallback whenever the prop was left empty, so the
+   component still renders when the editor only filled in a heading. #}
 {% set space = jarvis.classes(padding|default('none'), padding_size|default('medium'), margin|default('none'), margin_size|default('medium'), vertical_padding|default(false), no_padding|default(false)) %}
+
+{# Text alignment. The prop is a plain word (start/center/end); the two hashes
+   below map that word to the matching Bootstrap class. Looking a value up in a
+   hash like this is Twig's version of a switch statement. #}
 {% set align = align|default('center') %}
 {% set align_class = { start: 'text-start', center: 'text-center', end: 'text-end' }[align] %}
 {% set justify_class = { start: 'justify-content-start', center: 'justify-content-center', end: 'justify-content-end' }[align] %}
+
+{# True only when a background image was chosen AND it has a usable URL.
+   "is defined" guards against the key missing entirely, which would error. #}
 {% set has_image = image.src is defined and image.src %}
+
+{# Darkening layer strength, 0-100 from the editor. Defaults handled here so the
+   markup below can assume both values always exist. #}
 {% set overlay = overlay|default(40) %}
 {% set text_color = text_color|default('light') %}
+
+{# The banner itself. Classes, left to right:
+   - jarvis-hero / jarvis-hero--text-*  our own styles, see hero.css
+   - position-relative                  lets the overlay sit on top of it
+   - d-flex align-items-center          vertically centers the content
+   - {{ align_class }} {{ space }}      the computed alignment + spacing
+   The background image is set inline because the URL is only known at runtime. #}
 <section class="jarvis-hero jarvis-hero--text-{{ text_color }} position-relative d-flex align-items-center {{ align_class }} {{ space }}"{% if has_image %} style="background-image: url('{{ image.src }}');"{% endif %}>
   {% if has_image %}
+    {# Semi-transparent black layer between the photo and the text so the text
+       stays readable. aria-hidden keeps it out of screen readers — it is pure
+       decoration. #}
     {# opacity is the user floor; js/contrast.js raises it when white text fails WCAG AA contrast #}
     <div class="jarvis-hero__overlay" style="opacity: {{ overlay / 100 }};" aria-hidden="true"></div>
   {% endif %}
+
+  {# position-relative here too, so this block stacks above the overlay
+     (see the z-index rules in hero.css). #}
   <div class="container position-relative jarvis-hero__inner py-5">
     <div class="row {{ justify_class }}">
       <div class="jarvis-hero__content">
+        {# The heading tag is configurable: a page should only ever have one h1,
+           so a second hero on the same page can be set to h2 or h3. #}
         {% set h = heading_level|default('h1') %}
+
+        {# Everything below is optional — each {% if %} skips its markup entirely
+           when the prop is empty, so we never output an empty tag. #}
         {% if heading %}<{{ h }} class="jarvis-hero__heading display-3 fw-bold mb-3">{{ heading }}</{{ h }}>{% endif %}
         {% if subheading %}<p class="jarvis-hero__subheading lead mb-4">{{ subheading }}</p>{% endif %}
+
+        {# The call-to-action button needs both a label and a destination;
+           printing a link with no href would be broken and inaccessible. #}
         {% if cta_text and cta_href %}<a href="{{ cta_href }}" class="btn btn-primary btn-lg">{{ cta_text }}</a>{% endif %}
       </div>
     </div>
