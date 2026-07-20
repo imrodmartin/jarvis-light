@@ -43,17 +43,32 @@ drush theme:install jarvis
 drush cache:rebuild
 
 # 2. Apply the recipe, then rebuild again.
-drush recipe web/themes/custom/jarvis/recipe
+#    The path is relative to the DOCROOT (web/), not the project root — see below.
+drush recipe themes/custom/jarvis/recipe
 drush cache:rebuild
 ```
 
-> **DDEV (or any containerised Drush):** pass the recipe as an **absolute
-> container path**, since `ddev drush` resolves relative paths from the
-> container working dir:
+> **Recipe paths are relative to the docroot.** Before it bootstraps, Drush
+> `chdir()`s to the Drupal root, and `drush recipe` resolves its argument
+> against that. So from a standard project layout the path is
+> `themes/custom/jarvis/recipe` — **not** `web/themes/custom/jarvis/recipe`,
+> which fails with `The supplied path ... is not a directory` no matter which
+> directory you run it from. This is plain Drush behaviour, not specific to
+> any container setup.
+>
+> An absolute path always works and is the safer choice under DDEV, Lando, or
+> any other containerised Drush:
 >
 > ```bash
 > ddev drush recipe /var/www/html/web/themes/custom/jarvis/recipe
 > ```
+
+> **The recipe applies once.** Canvas normalises the component-tree keys when
+> it saves config (`'0:43c8216d-…'` is stored as `43c8216d-…`), so the config
+> in the database no longer matches the exported recipe files. A second
+> `drush recipe` therefore aborts with `exists already and does not match`,
+> even on a site where nothing was touched. If an apply fails partway, roll
+> the database back rather than re-running.
 
 > **Order matters.** If you apply the recipe *before* enabling Canvas + the
 > theme and rebuilding, the import fails with
@@ -74,8 +89,9 @@ drush cache:rebuild
   `focal_point` crop type, `media` types + fields, and theme settings
 - Creates the **Jarvis Sample** content type (fields, form/view displays, and
   a Canvas content template for its full view)
-- Imports demo content: the **Test Blog** node, the **Test Page** Canvas page
-  (`/test-page`) + its main-menu link, and all five media items
+- Imports demo content: the **Test Blog** node, the **Welcome** Canvas page
+  (aliased to `/test-page`) + its main-menu link, and three media items (two
+  images and one remote video)
 
 Canvas auto-discovers the theme's SDC components (card, hero, image, section,
 etc.) on cache rebuild — they are not shipped as config, so the content
