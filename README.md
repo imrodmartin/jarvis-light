@@ -27,7 +27,11 @@ unauthenticated 60-calls/hour API rate limit (and the occasional `502`) that
 otherwise blocks the install.
 
 Composer installs the theme to `web/themes/custom/jarvis` and downloads the
-contrib modules to `web/modules/contrib`. Then run, **in this order**:
+contrib modules to `web/modules/contrib`.
+
+If you clone the repo by hand instead, the directory **must** be named
+`jarvis` — that is the theme's machine name, and both the install commands
+and the recipe's config reference it. Then run, **in this order**:
 
 ```bash
 # 1. Enable Canvas + the theme FIRST and rebuild the cache.
