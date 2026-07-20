@@ -1,21 +1,54 @@
+# Hero — Single Directory Component (SDC) definition.
+#
+# This file is the component's "contract". Drupal reads it to learn the
+# component exists, what settings (props) it accepts, and how to draw the form
+# an editor fills in inside Canvas or Layout Builder. The values collected here
+# are handed to hero.twig as variables; hero.css styles the result.
+#
+# The filename matters: hero.component.yml sits beside hero.twig in
+# components/hero/, which is how Drupal pairs the two into "jarvis:hero".
+
+# Points editors/IDEs at Drupal core's schema so this file can be validated
+# and autocompleted. Not used at runtime.
 $schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+
+# Human-readable label shown in the component picker.
 name: Hero
+# "stable" tells other developers this component's props are safe to rely on.
 status: stable
 description: 'Full-width hero banner with heading, subtext, CTA and background image.'
+# Groups this component with the other Jarvis ones in the picker UI.
 category: Jarvis
+
+# Extra asset libraries to load alongside the component's own CSS.
+# jarvis/contrast is the JS that bumps the overlay opacity when white text
+# would fail WCAG AA contrast against the chosen background photo.
 libraryOverrides:
   dependencies:
     - jarvis/contrast
+
+# Everything below describes the component's inputs, using JSON Schema.
+# Each entry becomes one field in the editor form and one Twig variable.
 props:
   type: object
+  # Props listed under "required" must be filled in — the component is
+  # meaningless without a heading.
   required:
     - heading
   properties:
+    # title       -> the field label the editor sees
+    # type        -> the kind of value allowed (string, integer, boolean, ...)
+    # default     -> used when the editor leaves the field alone
+    # enum        -> restricts the value to a fixed list, rendered as a dropdown
+    # meta:enum   -> friendly labels for each enum value
+    # examples    -> sample values shown in previews and component libraries
     heading:
       title: Heading
       type: string
       examples:
         - 'Build faster with Jarvis'
+    # Which HTML tag the heading renders as. Accessibility matters here: screen
+    # readers use heading levels to navigate a page.
     heading_level:
       title: 'Heading level'
       description: 'Use H1 only once per page — pick H2 for additional heroes.'
@@ -26,11 +59,14 @@ props:
         h2: H2
         h3: H3
       default: h1
+    # Optional supporting line under the heading.
     subheading:
       title: Subheading
       type: string
       examples:
         - 'A component-driven Drupal theme for Canvas and Layout Builder.'
+    # Call-to-action button. The template only renders the button when BOTH
+    # cta_text and cta_href are provided.
     cta_text:
       title: 'CTA text'
       type: string
@@ -39,19 +75,27 @@ props:
     cta_href:
       title: 'CTA link'
       type: string
+      # uri-reference accepts internal paths (/node/1) as well as full URLs.
       format: uri-reference
       examples:
         - '/node/1'
         - 'https://example.com'
+    # $ref reuses a schema Drupal already defines instead of redescribing an
+    # image here — that is what gives the editor a real media picker. The
+    # template reads image.src from the result.
     image:
       title: 'Background image'
       $ref: json-schema-definitions://canvas.module/image
+    # How dark the layer over the photo is, 0-100. The template divides by 100
+    # to get a CSS opacity. Treated as a floor: contrast JS may raise it.
     overlay:
       title: 'Overlay opacity (%)'
       type: integer
       default: 40
       examples:
         - 40
+    # start/center/end are CSS logical directions — they flip automatically in
+    # right-to-left languages, which "left"/"right" would not.
     align:
       title: 'Text alignment'
       type: string
@@ -63,6 +107,7 @@ props:
       default: center
       examples:
         - center
+    # Becomes the .jarvis-hero--text-light / --text-dark modifier class.
     text_color:
       title: 'Text color'
       type: string
@@ -73,6 +118,11 @@ props:
       default: light
       examples:
         - light
+    # --- Spacing props ---------------------------------------------------
+    # These four (plus vertical_padding) are the shared Jarvis spacing options.
+    # The template passes them to the jarvis-spacing macro, which turns them
+    # into Bootstrap utility classes such as "pt-3" or "mb-4".
+    # Padding = space inside the banner; margin = space outside it.
     padding:
       title: Padding
       type: string
@@ -115,6 +165,7 @@ props:
         medium: 'Medium (20px)'
         large: 'Large (30px)'
       default: medium
+    # Shortcut toggle for a fixed 30px of top+bottom padding.
     vertical_padding:
       title: 'Vertical padding (30px)'
       type: boolean
