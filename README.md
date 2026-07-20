@@ -22,6 +22,11 @@ ddev composer config repositories.jarvis-light '{"type":"vcs","url":"https://git
 ddev composer require imrodmartin/jarvis-light
 ```
 
+**Use `v1.2.0` or newer.** Earlier releases install to the wrong directory and
+ship a `jarvis.settings.yml` that aborts the recipe — see below. Composer
+resolves tags, not `master`, so a site created before `v1.2.0` stays broken
+until you explicitly update it.
+
 `no-api` makes Composer clone over git instead of the GitHub API — it avoids the
 unauthenticated 60-calls/hour API rate limit (and the occasional `502`) that
 otherwise blocks the install.
@@ -33,9 +38,16 @@ contrib modules to `web/modules/contrib`.
 > `imrodmartin/jarvis-light`, but the theme's machine name is `jarvis`, and the
 > directory must match it — the recipe path and the recipe's config both
 > reference `jarvis`. `extra.installer-name` in `composer.json` pins the install
-> directory to `jarvis`. If you installed an earlier release that landed in
-> `web/themes/custom/jarvis-light`, delete that directory and re-run
-> `composer install`.
+> directory to `jarvis`, as of `v1.2.0`. If you installed an earlier release
+> and it landed in `web/themes/custom/jarvis-light`, update the package —
+> `composer install` will **not** fix it, because it reinstalls the old version
+> pinned in `composer.lock`:
+>
+> ```bash
+> rm -rf web/themes/custom/jarvis-light
+> ddev composer update imrodmartin/jarvis-light
+> ddev drush cache:rebuild
+> ```
 
 If you clone the repo by hand instead, the directory **must** be named
 `jarvis` — that is the theme's machine name, and both the install commands
