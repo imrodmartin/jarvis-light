@@ -1,35 +1,67 @@
+/**
+ * @file
+ * Styles for the Jarvis hero SDC.
+ *
+ * Drupal loads this file automatically whenever the hero component renders —
+ * that is the point of a Single Directory Component: markup and styles ship
+ * together. Class names follow BEM: `.jarvis-hero` is the block, `__overlay`
+ * and `__content` are elements inside it, `--text-light` is a modifier that
+ * changes how the block looks.
+ */
+
+/* The banner box itself. */
 .jarvis-hero {
   /* Fixed min-height, NOT vh: Canvas renders in an auto-height preview iframe
      where viewport units feed back into the iframe height and break scrolling. */
   min-height: 420px;
+  /* cover = scale the photo until it fills the box, cropping the overflow;
+     center = keep the middle of the photo in view when it is cropped. */
   background-size: cover;
   background-position: center;
   color: #fff;
 }
+
+/* No background image? Fall back to a brand gradient instead of a blank box.
+   `:not([style*="background-image"])` matches only when the inline style the
+   Twig template writes is absent — i.e. the editor picked no image.
+   `var(--bs-secondary, #1b2a4a)` reads a Bootstrap theme variable and uses the
+   hex value only if that variable is undefined. */
 .jarvis-hero:not([style*="background-image"]) {
   background: linear-gradient(135deg, var(--bs-primary), var(--bs-secondary, #1b2a4a));
 }
+
+/* The darkening layer. `inset: 0` pins all four edges to the parent, so it
+   covers the whole banner; the parent is position-relative, which is what makes
+   "the whole banner" the reference box. Opacity is set inline by the template. */
 .jarvis-hero__overlay {
   position: absolute;
   inset: 0;
   background: #000;
   z-index: 0;
 }
+
+/* Higher z-index than the overlay above, so heading/text/button stay clickable
+   and visible rather than being covered by the black layer. */
 .jarvis-hero__inner {
   z-index: 1;
 }
+
 /* Text column: full width on small screens, 85% from lg up (was Bootstrap
    col-lg-9/col-xl-8 = 75%/66%, too narrow). Plain width, not a col- class,
    because the grid has no 85% step. */
 .jarvis-hero__content {
   width: 100%;
 }
+/* 992px is Bootstrap's "lg" breakpoint — desktop-ish and up. */
 @media (min-width: 992px) {
   .jarvis-hero__content {
     width: 85%;
   }
 }
+
 /* Text color: light (#fff) or dark (#2d6cdf), from the text_color prop. */
+/* The heading and subheading are listed explicitly because Bootstrap's own
+   typography rules would otherwise override the color inherited from .jarvis-hero. */
 .jarvis-hero--text-light,
 .jarvis-hero--text-light .jarvis-hero__heading,
 .jarvis-hero--text-light .jarvis-hero__subheading {
@@ -40,6 +72,7 @@
 .jarvis-hero--text-dark .jarvis-hero__subheading {
   color: var(--bs-primary);
 }
+
 /* Light text -> whole region black for guaranteed contrast. Comes after the
    gradient rule above so it wins the specificity tie. A background image, when
    present, still paints over this and is handled by the overlay tuned in
