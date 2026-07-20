@@ -29,6 +29,14 @@ otherwise blocks the install.
 Composer installs the theme to `web/themes/custom/jarvis` and downloads the
 contrib modules to `web/modules/contrib`.
 
+> **Package name vs. directory name.** The Composer package is
+> `imrodmartin/jarvis-light`, but the theme's machine name is `jarvis`, and the
+> directory must match it — the recipe path and the recipe's config both
+> reference `jarvis`. `extra.installer-name` in `composer.json` pins the install
+> directory to `jarvis`. If you installed an earlier release that landed in
+> `web/themes/custom/jarvis-light`, delete that directory and re-run
+> `composer install`.
+
 If you clone the repo by hand instead, the directory **must** be named
 `jarvis` — that is the theme's machine name, and both the install commands
 and the recipe's config reference it. Then run, **in this order**:

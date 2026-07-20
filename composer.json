@@ -11,5 +11,8 @@
         "drupal/canvas_field_component": "^1.0",
         "drupal/focal_point": "^2.1",
         "drupal/twig_tweak": "^3.4"
+    },
+    "extra": {
+        "installer-name": "jarvis"
     }
 }
